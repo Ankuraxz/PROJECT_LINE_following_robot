@@ -1,0 +1,91 @@
+//Code
+/*project on black line follower*/
+   
+  int turn_delay = 100;
+  
+// H-BRIDGE Connection   
+  const int motorA1      = 8;  
+  const int motorA2      = 10; 
+  
+  const int motorB1      = 12; 
+  const int motorB2      = 13; 
+  
+
+//Sensor Connection
+  const int left_sensor =A0;//Analog in......You can try for digital too
+  const int right_sensor =A1;
+
+  
+  
+  int left_sensor_state;
+  int right_sensor_state;
+
+void setup() {
+  pinMode(motorA1, OUTPUT);
+  pinMode(motorA2, OUTPUT);
+  pinMode(motorB1, OUTPUT);
+  pinMode(motorB2, OUTPUT);
+  //A0,A1.... are always INPUT pins....>declaration not needed
+
+  Serial.begin(9600);
+
+  delay(3000);
+  
+}
+
+void loop() {
+  
+
+  
+
+
+left_sensor_state = analogRead(left_sensor);
+right_sensor_state = analogRead(right_sensor);
+
+if(right_sensor_state > 500 && left_sensor_state < 500)
+{
+  Serial.println("turning right");
+
+  digitalWrite (motorA1,LOW);//Adjust this//Adjust this
+  digitalWrite(motorA2,HIGH);                      //Adjust this 
+  digitalWrite (motorB1,LOW);//Adjust this
+  digitalWrite(motorB2,HIGH);//Adjust this
+  
+  }
+else if(right_sensor_state < 500 && left_sensor_state > 500)
+{
+  Serial.println("turning left");
+  
+  digitalWrite (motorA1,HIGH);//Adjust this
+  digitalWrite(motorA2,LOW);  //Adjust this                     
+  digitalWrite (motorB1,HIGH);//Adjust this
+  digitalWrite(motorB2,LOW);//Adjust this
+  delay(turn_delay);
+  }
+
+if(right_sensor_state > 500 && left_sensor_state > 500)
+{
+  Serial.println("going forward");
+
+  digitalWrite (motorA2,LOW);//Adjust this
+  digitalWrite(motorA1,HIGH);   //Adjust this                    
+  digitalWrite (motorB2,HIGH);//Adjust this
+  digitalWrite(motorB1,LOW);//Adjust this
+  delay(turn_delay);
+  
+  }
+
+if(right_sensor_state < 500 && left_sensor_state < 500)
+{ 
+  Serial.println("stop");
+  
+  digitalWrite (motorA2,LOW);
+  digitalWrite(motorA1,LOW);                     
+  digitalWrite (motorB2,LOW);
+  digitalWrite(motorB1,LOW);
+ delay(turn_delay);
+  
+  }
+
+ //Here no backword is required
+}
